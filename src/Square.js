@@ -1,15 +1,51 @@
 import React from "react";
 import "./styles.css";
 
+//Squareコンポーネントは制御されたコンポーネント
 class Square extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: null
+    };
+  }
+
   render() {
-    return <button className="square">{/* TODO */}</button>;
+    return (
+      <button
+        className="square"
+        onClick={() => {
+          this.props.onClick();
+        }}
+      >
+        {this.props.value}
+      </button>
+    );
   }
 }
 
+//全てのマス目の状態をBoardコンポーネント内で保持するようにした
 class Board extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      squares: Array(9).fill(null)
+    };
+  }
+
+  handleClick(i) {
+    const squares = this.state.squares.slice();
+    squares[i] = "X";
+    this.setState({ squares: squares });
+  }
+
   renderSquare(i) {
-    return <Square />;
+    return (
+      <Square
+        value={this.state.squares[i]}
+        onClick={() => this.handleClick(i)}
+      />
+    );
   }
 
   render() {
